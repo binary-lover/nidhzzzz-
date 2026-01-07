@@ -1,0 +1,25 @@
+# Core dependencies
+requests>=2.28.0
+beautifulsoup4>=4.11.0
+colorama>=0.4.6
+rich>=13.0.0
+argparse>=1.4.0
+urllib3>=1.26.0
+lxml>=4.9.0
+
+# Optional dependencies (for enhanced features)
+tqdm>=4.64.0
+pyfiglet>=0.8.post1
+Pillow>=9.0.0
+python-magic>=0.4.27
+netaddr>=0.8.0
+dnspython>=2.2.0
+paramiko>=2.11.0
+cryptography>=38.0.0
+
+# Development dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+flake8>=6.0.0
+black>=23.0.0
+mypy>=1.0.0
