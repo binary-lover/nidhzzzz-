@@ -18,11 +18,13 @@ class HTTPClient:
                  user_agent: Optional[str] = None,
                  proxy: Optional[str] = None,
                  delay: float = 0,
-                 retries: int = 3):
+                 retries: int = 3,
+                 verify_ssl: bool = False):
         
         self.timeout = timeout
         self.delay = delay
         self.retries = retries
+        self.verify_ssl = verify_ssl
         
         # Create session with optimized settings
         self.session = requests.Session()
@@ -98,25 +100,26 @@ class HTTPClient:
         # Set default parameters
         kwargs.setdefault('timeout', self.timeout)
         kwargs.setdefault('allow_redirects', True)
-        kwargs.setdefault('verify', False)  # Faster without SSL verification
+        kwargs.setdefault('verify', self.verify_ssl)
         kwargs.setdefault('stream', False)
         
         try:
             response = self.session.request(method, url, **kwargs)
-            response.elapsed = response.elapsed.total_seconds()
+            if hasattr(response, 'elapsed'):
+                response.elapsed = response.elapsed.total_seconds()
             return response
         
         except requests.exceptions.Timeout:
-            # print(f"Timeout for {url}")
             return None
         except requests.exceptions.ConnectionError:
-            # print(f"Connection error for {url}")
             return None
         except requests.exceptions.TooManyRedirects:
-            # print(f"Too many redirects for {url}")
+            return None
+        except requests.exceptions.RequestException as e:
+            # Catch all requests-related exceptions
             return None
         except Exception as e:
-            # print(f"Error for {url}: {e}")
+            # Unexpected error - log if needed
             return None
     
     def close(self):
