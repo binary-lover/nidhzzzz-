@@ -28,7 +28,7 @@ Examples:
         """
     )
     
-    parser.add_argument('target', help='Target URL to scan')
+    parser.add_argument('target', nargs='?', help='Target URL to scan')
     parser.add_argument('-m', '--mode', 
                        choices=['quick', 'normal', 'deep', 'aggressive'],
                        default='normal', 
@@ -71,6 +71,12 @@ Examples:
     if args.version:
         print("NIDHZ Ultimate v2.0")
         return
+    
+    # Check if target is provided
+    if not args.target:
+        print("[!] Error: target URL is required")
+        parser.print_help()
+        sys.exit(1)
     
     # Validate and normalize URL
     try:
